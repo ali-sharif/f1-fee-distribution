@@ -44,15 +44,12 @@ import java.math.BigInteger;
  *
  */
 
-@SuppressWarnings({"unused", "WeakerAccess"})
+@SuppressWarnings({"WeakerAccess"})
 public class Decimal {
 
     // class settings
     // ==============
     private final static int precision = 18;
-    // bytes required to represent the above precision
-    // Ceiling[Log2[999 999 999 999 999 999]]
-    private final static int DecimalPrecisionBits = 60;
 
     private static BigInteger precisionInt = BigInteger.TEN.pow(precision);
     private final BigInteger value;
@@ -89,18 +86,12 @@ public class Decimal {
     public Decimal add(Decimal d) {
         BigInteger r = value.add(d.value);
 
-        if (r.bitLength() > 255+DecimalPrecisionBits)
-            throw new RuntimeException("Int overflow");
-
         return new Decimal(r);
     }
 
     // subtraction
     public Decimal subtract(Decimal d) {
         BigInteger r = value.subtract(d.value);
-
-        if (r.bitLength() > 255+DecimalPrecisionBits)
-            throw new RuntimeException("Int overflow");
 
         return new Decimal(r);
     }
@@ -111,9 +102,6 @@ public class Decimal {
         BigInteger mul = value.multiply(d.value);
         BigInteger chopped = chopPrecisionAndTruncate(mul);
 
-        if (chopped.bitLength() > 255+DecimalPrecisionBits)
-            throw new RuntimeException("Int overflow");
-
         return new Decimal(chopped);
     }
 
@@ -123,9 +111,6 @@ public class Decimal {
         BigInteger mul = value.multiply(precisionInt).multiply(precisionInt);
         BigInteger quo = mul.divide(d.value);
         BigInteger chopped = chopPrecisionAndTruncate(quo);
-
-        if (chopped.bitLength() > 255+DecimalPrecisionBits)
-            throw new RuntimeException("Int overflow");
 
         return new Decimal(chopped);
     }
