@@ -1,3 +1,11 @@
 # intellij
 out/
 .idea
+
+# gradle
+.gradle
+/build/
+gradle-app.setting
+# avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+.gradletasknamecache
